@@ -29,15 +29,5 @@ public class Main {
             System.out.println("Échec de la conversion : " + resultat.getErreur());
         }
 
-        // Test avec une Map vide pour vérifier le comportement
-        System.out.println("\nTest avec une Map vide :");
-        Map<String, String> propsVide = new HashMap<>();
-        resultat = convertisseur.convertir(propsVide);
-        if (resultat.isSucces()) {
-            System.out.println("Conversion réussie ! Résultat YAML :");
-            System.out.println(resultat.getContenu());
-        } else {
-            System.out.println("Échec de la conversion : " + resultat.getErreur());
-        }
     }
 }

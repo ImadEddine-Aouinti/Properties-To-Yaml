@@ -1,5 +1,6 @@
 package ump.PropertiesToYamlConverter.convertisseur.impl;
 
+import org.yaml.snakeyaml.DumperOptions;
 import ump.PropertiesToYamlConverter.convertisseur.PropertiesConvertisseur;
 import ump.PropertiesToYamlConverter.model.ResultatConversion;
 import org.yaml.snakeyaml.Yaml;
@@ -10,13 +11,17 @@ public class SimpleYAMLConvertisseur implements PropertiesConvertisseur {
     @Override
     public ResultatConversion convertir(Map<String, String> props) {
         try {
-            // Utiliser SnakeYAML pour convertir la Map directement en YAML
-            Yaml yaml = new Yaml();
+            DumperOptions options = new DumperOptions();
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            options.setPrettyFlow(true);
+            options.setIndent(2); 
+
+            Yaml yaml = new Yaml(options);
             String yamlOutput = yaml.dump(props);
 
-            return new ResultatConversion(true, yamlOutput, null);
+            return new ResultatConversion(true, yamlOutput, null, null);
         } catch (Exception e) {
-            return new ResultatConversion(false, null, "Erreur lors de la conversion simple en YAML : " + e.getMessage());
+            return new ResultatConversion(false, null, "Erreur lors de la conversion simple en YAML : " + e.getMessage(), null);
         }
     }
 }
