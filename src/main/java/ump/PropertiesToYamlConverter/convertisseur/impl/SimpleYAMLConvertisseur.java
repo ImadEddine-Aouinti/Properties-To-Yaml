@@ -14,7 +14,7 @@ public class SimpleYAMLConvertisseur implements PropertiesConvertisseur {
             DumperOptions options = new DumperOptions();
             options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
             options.setPrettyFlow(true);
-            options.setIndent(2); 
+            options.setIndent(2);
 
             Yaml yaml = new Yaml(options);
             String yamlOutput = yaml.dump(props);
