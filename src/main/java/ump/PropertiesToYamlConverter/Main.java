@@ -1,6 +1,6 @@
 package ump.PropertiesToYamlConverter;
 
-import ump.PropertiesToYamlConverter.convertisseur.impl.SimpleYAMLConvertisseur;
+import ump.PropertiesToYamlConverter.convertisseur.impl.ImbriqueYAMLConvertisseur;
 import ump.PropertiesToYamlConverter.model.ResultatConversion;
 
 import java.util.HashMap;
@@ -8,26 +8,23 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        // Créer une Map simulant un fichier properties
         Map<String, String> props = new HashMap<>();
-        props.put("name", "Alice");
-        props.put("age", "25");
-        props.put("city", "Paris");
-        props.put("enabled", "true");
+        props.put("user.name", "Alice");
+        props.put("user.age", "25");
+        props.put("user.address.city", "Paris");
+        props.put("user.address.country", "France");
+        props.put("settings.enabled", "true");
+        props.put("settings.theme", "dark");
 
-        // Instancier SimpleYAMLConvertisseur
-        SimpleYAMLConvertisseur convertisseur = new SimpleYAMLConvertisseur();
+        ImbriqueYAMLConvertisseur convertisseur = new ImbriqueYAMLConvertisseur();
 
-        // Effectuer la conversion
         ResultatConversion resultat = convertisseur.convertir(props);
 
-        // Vérifier le résultat
         if (resultat.isSucces()) {
             System.out.println("Conversion réussie ! Résultat YAML :");
             System.out.println(resultat.getContenu());
         } else {
             System.out.println("Échec de la conversion : " + resultat.getErreur());
         }
-
     }
 }
