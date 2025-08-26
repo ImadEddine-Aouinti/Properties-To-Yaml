@@ -1,6 +1,7 @@
 package ump.PropertiesToYamlConverter;
 
-import ump.PropertiesToYamlConverter.convertisseur.impl.ImbriqueYAMLConvertisseur;
+import ump.PropertiesToYamlConverter.convertisseur.ConvertisseurFactory;
+import ump.PropertiesToYamlConverter.convertisseur.PropertiesConvertisseur;
 import ump.PropertiesToYamlConverter.model.ResultatConversion;
 
 import java.util.HashMap;
@@ -16,7 +17,14 @@ public class Main {
         props.put("settings.enabled", "true");
         props.put("settings.theme", "dark");
 
-        ImbriqueYAMLConvertisseur convertisseur = new ImbriqueYAMLConvertisseur();
+        testConvertisseur(ConvertisseurFactory.ConvertisseurType.SIMPLE, props);
+        System.out.println("----------------------------------------");
+        testConvertisseur(ConvertisseurFactory.ConvertisseurType.IMBRIQUE, props);
+    }
+
+    private static void testConvertisseur(ConvertisseurFactory.ConvertisseurType type, Map<String, String> props) {
+        PropertiesConvertisseur convertisseur = ConvertisseurFactory.getConvertisseur(type);
+        System.out.println("Test du convertisseur : " + type);
 
         ResultatConversion resultat = convertisseur.convertir(props);
 
