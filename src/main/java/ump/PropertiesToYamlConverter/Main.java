@@ -29,7 +29,7 @@ public class Main {
                 return;
             }
 
-            testConvertisseur(ConvertisseurFactory.ConvertisseurType.IMBRIQUE, props, "imbrique_output.yaml");
+            testConvertisseur(ConvertisseurFactory.ConvertisseurType.IMBRIQUE, props, "res.yaml");
         } catch (IOException e) {
             System.out.println("Erreur lors du chargement ou de l'écriture des fichiers : " + e.getMessage());
         }
