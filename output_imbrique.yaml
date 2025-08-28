@@ -1,0 +1,64 @@
+app:
+  environment: production
+  debug: 'false'
+  max_retries: '3'
+  name: EnterpriseApp
+  version: 2.1.3
+  timeout: '5000'
+server:
+  max_connections: '500'
+  port: '8080'
+  thread_pool: '50'
+  host: prod.server.com
+  ssl:
+    protocol: TLSv1.2
+    enabled: 'true'
+cache:
+  port: '6379'
+  host: redis.prod.server
+  type: redis
+  enabled: 'true'
+  timeout: '3600'
+  max_entries: '1000'
+feature:
+  analytics: 'true'
+  security:
+    audit: 'true'
+  rate_limit: '100'
+  experimental: 'false'
+  notifications: 'true'
+logging:
+  file: /var/log/enterprise/app.log
+  level: INFO
+  compress: 'true'
+  pattern: '%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n'
+  max_size: 10MB
+api:
+  auth:
+    method: oauth2
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+  retry_count: '2'
+  base_url: https://api.enterprise.com/v1
+  timeout: '3000'
+  key: abc123xyz789
+metrics:
+  endpoint: /actuator/metrics
+  enabled: 'true'
+email:
+  password: mailPass456
+  smtp:
+    port: '587'
+    host: smtp.enterprise.com
+  from: support@enterprise.com
+  tls: 'true'
+  username: mailer
+db:
+  schema: enterprise
+  password: securePass123
+  driver: com.mysql.cj.jdbc.Driver
+  read_only: 'false'
+  pool:
+    size: '20'
+    max_wait: '10000'
+  url: jdbc:mysql://prod.db.server:3306/enterprise_db
+  username: admin_user

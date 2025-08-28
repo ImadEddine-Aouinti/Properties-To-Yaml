@@ -1,57 +1,53 @@
 package ump.PropertiesToYamlConverter;
 
+import ump.PropertiesToYamlConverter.facade.ConvertisseurManager;
 import ump.PropertiesToYamlConverter.convertisseur.ConvertisseurFactory;
-import ump.PropertiesToYamlConverter.convertisseur.PropertiesConvertisseur;
-import ump.PropertiesToYamlConverter.load.PropertiesLoader;
 import ump.PropertiesToYamlConverter.model.ResultatConversion;
-import ump.PropertiesToYamlConverter.output.YamlFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String[] filePaths = {"file1.properties"};
+        ConvertisseurManager manager = new ConvertisseurManager();
+
+        // Chemins des fichiers d'entrée et de sortie (à adapter selon votre environnement)
+        String[] inputFiles = {"file1.properties"};
+        String outputFileSimple = "output_simple.yaml";
+        String outputFileImbrique = "output_imbrique.yaml";
+
         try {
-            System.out.println("Chargement des fichiers : " + Arrays.toString(filePaths));
+            // Test avec convertisseur SIMPLE
+            System.out.println("Conversion avec le convertisseur SIMPLE :");
+            ResultatConversion resultatSimple = manager.convertirFichiers(
+                    ConvertisseurFactory.ConvertisseurType.SIMPLE,
+                    outputFileSimple,
+                    inputFiles
+            );
 
-            Map<String, String> props = new HashMap<>();
-            for (String filePath : filePaths) {
-                Map<String, String> fileProps = PropertiesLoader.loadProperties(filePath);
-                System.out.println("Propriétés chargées depuis " + filePath + " : " + fileProps.size());
-                props.putAll(fileProps);
+            if (resultatSimple.isSucces()) {
+                System.out.println("Conversion SIMPLE réussie ! Contenu :");
+                System.out.println(resultatSimple.getContenu());
+            } else {
+                System.out.println("Erreur lors de la conversion SIMPLE : " + resultatSimple.getErreur());
             }
 
-            if (props.isEmpty()) {
-                System.out.println("Aucune propriété chargée depuis les fichiers.");
-                return;
+            // Test avec convertisseur IMBRIQUE
+            System.out.println("\nConversion avec le convertisseur IMBRIQUE :");
+            ResultatConversion resultatImbrique = manager.convertirFichiers(
+                    ConvertisseurFactory.ConvertisseurType.IMBRIQUE,
+                    outputFileImbrique,
+                    inputFiles
+            );
+
+            if (resultatImbrique.isSucces()) {
+                System.out.println("Conversion IMBRIQUE réussie ! Contenu :");
+                System.out.println(resultatImbrique.getContenu());
+            } else {
+                System.out.println("Erreur lors de la conversion IMBRIQUE : " + resultatImbrique.getErreur());
             }
 
-            testConvertisseur(ConvertisseurFactory.ConvertisseurType.IMBRIQUE, props, "res.yaml");
         } catch (IOException e) {
-            System.out.println("Erreur lors du chargement ou de l'écriture des fichiers : " + e.getMessage());
-        }
-    }
-
-    private static void testConvertisseur(ConvertisseurFactory.ConvertisseurType type, Map<String, String> props, String outputFilePath) {
-        PropertiesConvertisseur convertisseur = ConvertisseurFactory.getConvertisseur(type);
-        System.out.println("Test du convertisseur : " + type);
-
-        ResultatConversion resultat = convertisseur.convertir(props);
-
-        if (resultat.isSucces()) {
-            System.out.println("Conversion réussie ! Résultat YAML :");
-            System.out.println(resultat.getContenu());
-            // Écrire le résultat dans un fichier YAML
-            try {
-                YamlFile.writeYamlFile(resultat.getContenu(), outputFilePath);
-            } catch (IOException e) {
-                System.out.println("Erreur lors de l'écriture du fichier YAML : " + e.getMessage());
-            }
-        } else {
-            System.out.println("Échec de la conversion : " + resultat.getErreur());
+            System.out.println("Erreur générale : " + e.getMessage());
         }
     }
 }
