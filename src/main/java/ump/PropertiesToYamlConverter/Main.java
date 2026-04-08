@@ -2,6 +2,7 @@ package ump.PropertiesToYamlConverter;
 
 import ump.PropertiesToYamlConverter.convertisseur.ConvertisseurFactory;
 import ump.PropertiesToYamlConverter.convertisseur.PropertiesConvertisseur;
+import ump.PropertiesToYamlConverter.exception.PropertiesLoadingException;
 import ump.PropertiesToYamlConverter.load.PropertiesLoader;
 import ump.PropertiesToYamlConverter.model.ResultatConversion;
 import ump.PropertiesToYamlConverter.output.YamlFile;
@@ -18,8 +19,9 @@ public class Main {
             System.out.println("Chargement des fichiers : " + Arrays.toString(filePaths));
 
             Map<String, String> props = new HashMap<>();
+            PropertiesLoader propertiesLoader = new PropertiesLoader();
             for (String filePath : filePaths) {
-                Map<String, String> fileProps = PropertiesLoader.loadProperties(filePath);
+                Map<String, String> fileProps = propertiesLoader.load(filePath);
                 System.out.println("Propriétés chargées depuis " + filePath + " : " + fileProps.size());
                 props.putAll(fileProps);
             }
@@ -30,8 +32,9 @@ public class Main {
             }
 
             testConvertisseur(ConvertisseurFactory.ConvertisseurType.IMBRIQUE, props, "imbrique_output.yaml");
-        } catch (IOException e) {
-            System.out.println("Erreur lors du chargement ou de l'écriture des fichiers : " + e.getMessage());
+        } catch (PropertiesLoadingException e) {
+            System.err.println("Erreur lors du chargement des propriétés : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
